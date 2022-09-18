@@ -1,11 +1,24 @@
-import Express, { Request, Response } from 'express';
-const app = Express();
-const port = process.env.PORT ?? 1337;
+import cors from 'cors';
+import Express from 'express';
 
-app.get('/time', (_req: Request, res: Response) => {
-  res.json({ time: new Date() });
-});
+import { initPostgres } from './database';
+import { jsonErrors } from './middleware/jsonErrors';
+import router from './routes';
 
-app.listen(port, () => {
-  console.log(`🚀 Teller.sh listening at http://localhost:${port}`);
-});
+(async () => {
+  const app = Express();
+  const port = process.env.PORT ?? 1337;
+
+  await initPostgres();
+
+  app.use(cors());
+  app.use(Express.json());
+
+  app.use('/', router);
+
+  app.use(jsonErrors);
+
+  app.listen(port, () => {
+    console.log(`🚀 Teller.sh listening at http://localhost:${port}`);
+  });
+})();

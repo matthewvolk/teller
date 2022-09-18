@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source "$(git rev-parse --show-toplevel)/sh/pre.sh"
+source "$(git rev-parse --show-toplevel)/shell/pre.sh"
 
 set -e # Enable set -e
 
