@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import postgres from '../database';
-import { InternalServerError, NotFoundError, UnauthorizedError } from '../errors';
+import { InternalServerError, UnauthorizedError } from '../errors';
 import { User } from '../models/User';
 import JWTService, { JWTTokenPayload } from '../services/JWTService';
 
@@ -50,7 +50,7 @@ export const authenticate = async (req: Request, _res: Response, next: NextFunct
 
     // Handle user not found
     if (!user) {
-      throw new NotFoundError('User not found');
+      throw new UnauthorizedError('User not found');
     }
 
     req.user = user;

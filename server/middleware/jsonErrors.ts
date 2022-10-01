@@ -4,7 +4,7 @@ interface JsonError extends Error {
   status?: number;
 }
 
-const IS_PROD = process.env.NODE_ENV === 'production';
+const IS_PROD = process.env.NODE_ENV === 'heroku';
 
 export const jsonErrors = (err: JsonError, _req: Request, res: Response, next: NextFunction) => {
   if (res.headersSent) {

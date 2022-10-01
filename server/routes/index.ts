@@ -11,4 +11,6 @@ router.post('/api/auth/login', controllers.Users.Login);
 
 router.get('/api/me', controllers.Users.Me);
 
+router.get('/api/plaid/sandbox', controllers.Plaid.Sandbox);
+
 export default router;
