@@ -9,7 +9,7 @@ export const Me = [
       assertUserExists(req.user);
       const user = req.user;
 
-      res.json(user);
+      res.json({ data: user });
     } catch (err) {
       next(err);
     }
