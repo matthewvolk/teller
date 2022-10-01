@@ -1,10 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
-import postgres from '../../database';
-import { NotFoundError } from '../../errors';
-import { User } from '../../models/User';
 import JWTService from '../../services/JWTService';
-import PasswordService from '../../services/PasswordService';
+import UserService from '../../services/UserService';
 import validators from '../../validators';
 
 export const Login = [
@@ -12,16 +9,7 @@ export const Login = [
     try {
       const credentials = validators.http.RequestBody.Users.Login.parse(req.body);
 
-      const existingUser = await postgres.getRepository(User).findOneBy({
-        email: credentials.email,
-      });
-
-      if (!existingUser) {
-        throw new NotFoundError('User not found in database');
-      }
-
-      await PasswordService.comparePasswords(credentials.password, existingUser.password);
-
+      const existingUser = await UserService.logInUser(credentials);
       const token = JWTService.signToken({ id: existingUser.id });
 
       res.json({ data: existingUser, token });
