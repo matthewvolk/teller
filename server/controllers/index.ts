@@ -1,11 +1,11 @@
-import Plaid from './Plaid';
+import Money from './Money';
 import Time from './Time';
 import Users from './Users';
 
 const controllers = {
   Time: Time,
   Users: Users,
-  Plaid: Plaid,
+  Money: Money,
 };
 
 export default controllers;

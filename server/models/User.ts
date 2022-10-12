@@ -4,7 +4,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+
+import { MoneyToken } from './MoneyToken';
 
 @Entity('users')
 export class User {
@@ -28,4 +31,7 @@ export class User {
 
   @Column({ nullable: false })
   password: string;
+
+  @OneToMany(() => MoneyToken, (moneyToken) => moneyToken.user)
+  money_tokens: MoneyToken[];
 }

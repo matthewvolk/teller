@@ -19,6 +19,7 @@ export {
   Products,
   ItemPublicTokenExchangeRequest,
   AccountsGetRequest,
+  ItemGetRequest,
 } from 'plaid';
 
 export default PlaidService;

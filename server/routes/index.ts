@@ -11,6 +11,7 @@ router.post('/api/auth/login', controllers.Users.Login);
 
 router.get('/api/me', controllers.Users.Me);
 
-router.get('/api/plaid/sandbox', controllers.Plaid.Sandbox);
+router.post('/api/money/auth/sandbox/public_token', controllers.Money.Auth.Sandbox.PublicToken);
+router.post('/api/money/auth/exchange_token', controllers.Money.Auth.ExchangeToken);
 
 export default router;

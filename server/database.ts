@@ -1,13 +1,14 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 
+import { MoneyToken } from './models/MoneyToken';
 import { User } from './models/User';
 
 const postgres = new DataSource({
   type: 'postgres',
   url: process.env.DATABASE_URL,
   ...(process.env.NODE_ENV === 'heroku' ? { ssl: { rejectUnauthorized: false } } : {}),
-  entities: [User],
+  entities: [MoneyToken, User],
   logging: true,
 
   /**
