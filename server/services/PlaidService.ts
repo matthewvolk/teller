@@ -15,14 +15,15 @@ const PlaidService = {
 };
 
 export {
-  SandboxPublicTokenCreateRequest,
-  Products,
-  ItemPublicTokenExchangeRequest,
   AccountsGetRequest,
   AccountsGetResponse,
-  ItemGetRequest,
-  InstitutionsGetByIdRequest,
   CountryCode,
+  InstitutionsGetByIdRequest,
+  ItemGetRequest,
+  ItemPublicTokenExchangeRequest,
+  LinkTokenCreateRequest,
+  Products,
+  SandboxPublicTokenCreateRequest,
 } from 'plaid';
 
 export default PlaidService;
