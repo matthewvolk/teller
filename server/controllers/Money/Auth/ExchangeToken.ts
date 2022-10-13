@@ -37,16 +37,14 @@ export const ExchangeToken = [
         throw new InternalServerError('Cannot save token because institution ID is null');
       }
 
-      await MoneyTokenService.saveToken({
+      const savedToken = await MoneyTokenService.saveToken({
         access_token: exchangeResponse.data.access_token,
         institution,
         item_id: tokenMetaResponse.data.item.item_id,
         user: req.user,
       });
 
-      const moneyTokens = await MoneyTokenService.getTokensForUser(req.user);
-
-      res.json({ data: moneyTokens });
+      res.json({ data: savedToken });
     } catch (err) {
       next(err);
     }

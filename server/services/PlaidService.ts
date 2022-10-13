@@ -19,7 +19,10 @@ export {
   Products,
   ItemPublicTokenExchangeRequest,
   AccountsGetRequest,
+  AccountsGetResponse,
   ItemGetRequest,
+  InstitutionsGetByIdRequest,
+  CountryCode,
 } from 'plaid';
 
 export default PlaidService;
