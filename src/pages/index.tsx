@@ -1,11 +1,8 @@
+import { PlaidLink } from '@/components/PlaidLink';
 import { trpc } from '../utils/trpc';
 
 export default function Home() {
-  const plaid = trpc.linkToken.useQuery();
+  const linkToken = trpc.linkToken.useQuery();
 
-  return (
-    <>
-      <pre>{plaid.isSuccess && JSON.stringify(plaid.data, null, 2)}</pre>
-    </>
-  );
+  return <>{linkToken.isSuccess && <PlaidLink linkToken={linkToken.data} />}</>;
 }

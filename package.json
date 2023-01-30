@@ -24,6 +24,7 @@
     "plaid": "^12.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-plaid-link": "^3.3.2",
     "typescript": "4.9.4",
     "zod": "^3.20.2"
   },

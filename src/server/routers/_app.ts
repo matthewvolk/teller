@@ -37,11 +37,30 @@ export const appRouter = router({
         country_codes: [CountryCode.Us],
       });
 
-      return createTokenResponse.data;
+      return createTokenResponse.data.link_token;
     } catch (error) {
       console.error(error);
     }
   }),
+  exchangePublicToken: procedure
+    .input(z.object({ publicToken: z.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        const exchangeTokenResponse = await plaid.itemPublicTokenExchange({
+          public_token: input.publicToken,
+        });
+
+        const accessToken = exchangeTokenResponse.data.access_token;
+
+        const accountsResponse = await plaid.accountsGet({
+          access_token: accessToken,
+        });
+
+        return accountsResponse.data;
+      } catch (error) {
+        console.error(error);
+      }
+    }),
 });
 
 export type AppRouter = typeof appRouter;
