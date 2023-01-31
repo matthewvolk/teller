@@ -1,30 +1,38 @@
-import { PlaidLink } from '@/components/PlaidLink';
-import { signIn, signOut, useSession } from 'next-auth/react';
-import { trpc } from '../utils/trpc';
+import { signIn, useSession } from "next-auth/react";
+import Head from "next/head";
+import { useRouter } from "next/router";
 
 export default function Home() {
-  const { data: session } = useSession();
-  const linkToken = trpc.linkToken.useQuery();
+  const router = useRouter();
+  const session = useSession();
 
-  if (session) {
-    return (
-      <main className="container mx-auto p-4">
-        <div className="flex justify-between">
-          <h1 className="text-2xl font-extrabold">Teller</h1>
-          <div className="mr-4 flex items-center">
-            <p className="mr-4">Signed in as {session.user?.email}</p>
-            <button onClick={() => signOut()}>Sign out</button>
-          </div>
-        </div>
-        {linkToken.isSuccess && <PlaidLink linkToken={linkToken.data} />}
-      </main>
-    );
+  if (session.status === "authenticated") {
+    router.push("/dashboard");
   }
 
   return (
-    <main className="container mx-auto flex justify-between p-4">
-      <h1 className="text-2xl font-extrabold">Teller</h1>
-      <button onClick={() => signIn()}>Sign in</button>
-    </main>
+    <>
+      <Head>
+        <title>Teller - An email service for money management</title>
+        <meta
+          name="description"
+          content="Teller - An email service for money management"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main className="container mx-auto p-4">
+        <header>
+          <nav className="flex items-center justify-between">
+            <h1 className="text-2xl font-bold">Teller</h1>
+            <button
+              onClick={() => void signIn()}
+              className="rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white"
+            >
+              Sign in
+            </button>
+          </nav>
+        </header>
+      </main>
+    </>
   );
 }

@@ -1,41 +1,34 @@
-import { trpc } from '@/utils/trpc';
-import { useState } from 'react';
-import { usePlaidLink } from 'react-plaid-link';
+import { api } from "@/utils/api";
+import { usePlaidLink } from "react-plaid-link";
 
-interface Props {
-  linkToken: string;
-}
+export const PlaidLink: React.FC<{ linkToken: string }> = ({ linkToken }) => {
+  const utils = api.useContext();
 
-export const PlaidLink: React.FC<Props> = ({ linkToken }) => {
-  const [data, setData] = useState('');
+  const setAccessToken = api.plaid.setAccessToken.useMutation();
 
-  const exchangeToken = trpc.exchangePublicToken.useMutation();
-
-  const { open, exit, ready } = usePlaidLink({
+  const { open, ready } = usePlaidLink({
+    token: linkToken,
     onSuccess: (public_token, metadata) => {
-      console.log('metadata', metadata);
-      exchangeToken.mutate(
+      console.log("metadata", metadata);
+
+      setAccessToken.mutate(
         { publicToken: public_token },
         {
-          onSuccess(data) {
-            setData(JSON.stringify(data, null, 2));
+          onSuccess: () => {
+            utils.plaid.getAccountData.invalidate();
           },
         }
       );
     },
-    onExit: (err, metadata) => {
-      console.log('err', err);
-    },
-    onEvent: (eventName, metadata) => {
-      console.log('eventName', eventName);
-    },
-    token: linkToken,
   });
 
   return (
-    <>
-      <button onClick={() => open()}>Link</button>
-      <pre>{data}</pre>
-    </>
+    <button
+      onClick={() => open()}
+      disabled={!ready}
+      className="rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white"
+    >
+      Link Bank Account
+    </button>
   );
 };
