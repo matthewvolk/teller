@@ -9,9 +9,10 @@ export default function Dashboard() {
   const session = useSession();
 
   const plaid = api.plaid.createLinkToken.useQuery();
+  const email = api.email.send.useMutation();
 
   if (session.status === "unauthenticated") {
-    router.push("/");
+    void router.push("/");
   }
 
   return (
@@ -41,8 +42,34 @@ export default function Dashboard() {
           <Accounts />
         </div>
 
-        {plaid.isSuccess && <PlaidLink linkToken={plaid.data} />}
-        {plaid.isError && <p>Link Error: {plaid.error.message}</p>}
+        <div className="flex justify-between">
+          <div>
+            {plaid.isSuccess && <PlaidLink linkToken={plaid.data} />}
+            {plaid.isError && <p>Link Error: {plaid.error.message}</p>}
+          </div>
+
+          <button
+            onClick={() => email.mutate()}
+            className="rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white"
+          >
+            Send Email
+          </button>
+        </div>
+
+        {email.isSuccess && email.data && (
+          <div className="mt-4 flex justify-end">
+            <p>
+              <a
+                href={email.data}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline"
+              >
+                Preview Email
+              </a>
+            </p>
+          </div>
+        )}
       </main>
     </>
   );
