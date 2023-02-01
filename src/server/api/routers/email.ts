@@ -1,7 +1,7 @@
 import { protectedProcedure, createTRPCRouter } from "../trpc";
 import { render } from "@react-email/render";
 import nodemailer from "nodemailer";
-import { Email } from "@/email/daily";
+import Email from "@/email/daily";
 import { Configuration, PlaidApi, PlaidEnvironments } from "plaid";
 import { env } from "@/env/server.mjs";
 import { TRPCError } from "@trpc/server";

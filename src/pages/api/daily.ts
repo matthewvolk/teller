@@ -4,7 +4,7 @@ import { type NextApiRequest, type NextApiResponse } from "next";
 import { Configuration, PlaidApi, PlaidEnvironments } from "plaid";
 import { render } from "@react-email/render";
 import nodemailer from "nodemailer";
-import { Email } from "@/email/daily";
+import Email from "@/email/daily";
 
 const plaidConfig = new Configuration({
   basePath: PlaidEnvironments.sandbox,
