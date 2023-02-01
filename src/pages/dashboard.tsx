@@ -2,7 +2,13 @@ import { PlaidLink } from "@/components/PlaidLink";
 import { api } from "@/utils/api";
 import { signOut, useSession } from "next-auth/react";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
+
+const usd = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
 
 export default function Dashboard() {
   const router = useRouter();
@@ -23,15 +29,31 @@ export default function Dashboard() {
         <link rel="icon" href="/favicon.ico" />
         <meta name="robots" content="noindex,nofollow" />
       </Head>
-      <main className="container mx-auto p-4">
+      <main className="container mx-auto max-w-5xl p-8">
         <header>
           <nav className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold">
-              Hi, {session.data?.user.name} 👋
-            </h1>
+            <Link
+              href="/dashboard"
+              className="rounded p-2 text-slate-700 hover:bg-slate-500/5 hover:text-slate-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.85}
+                stroke="currentColor"
+                className="h-8 w-8"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"
+                />
+              </svg>
+            </Link>
             <button
               onClick={() => void signOut()}
-              className="rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white"
+              className="rounded px-3 py-2 font-medium text-slate-700 hover:bg-slate-500/5 hover:text-slate-900"
             >
               Sign Out
             </button>
@@ -50,7 +72,7 @@ export default function Dashboard() {
 
           <button
             onClick={() => email.mutate()}
-            className="rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white"
+            className="rounded px-3 py-2 font-medium text-slate-700 hover:bg-slate-500/5 hover:text-slate-900"
           >
             Send Email
           </button>
@@ -93,30 +115,26 @@ const Accounts = () => {
   return (
     <>
       <div className="overflow-x-auto">
-        <table className="table-fixed rounded-md text-left text-sm">
-          <thead className="bg-gray-100 text-xs uppercase">
+        <table className="w-full table-auto rounded-md text-left">
+          <thead className="bg-slate-500/5 text-sm uppercase">
             <tr>
-              <th className="px-6 py-2">Name</th>
-              <th className="px-6 py-2">Official Name</th>
-              <th className="px-6 py-2">Type</th>
-              <th className="px-6 py-2">Subtype</th>
-              <th className="px-6 py-2">Mask</th>
-              <th className="px-6 py-2">Account ID</th>
-              <th className="px-6 py-2">Current Balance</th>
-              <th className="px-6 py-2">Available Balance</th>
+              <th className="px-6 py-3">Name</th>
+              <th className="px-6 py-3">Mask</th>
+              <th className="px-6 py-3">Current Balance</th>
+              <th className="px-6 py-3">Available Balance</th>
             </tr>
           </thead>
           <tbody>
             {accounts.data.map((account) => (
               <tr key={account.account_id} className="border-b">
-                <td className="px-6 py-2">{account.name}</td>
-                <td className="px-6 py-2">{account.official_name}</td>
-                <td className="px-6 py-2">{account.type}</td>
-                <td className="px-6 py-2">{account.subtype}</td>
-                <td className="px-6 py-2">{account.mask}</td>
-                <td className="px-6 py-2">{account.account_id}</td>
-                <td className="px-6 py-2">{account.balances.current}</td>
-                <td className="px-6 py-2">{account.balances.available}</td>
+                <td className="px-6 py-3 font-medium">{account.name}</td>
+                <td className="px-6 py-3 font-mono">{account.mask}</td>
+                <td className="px-6 py-3 font-mono text-green-600">
+                  {usd.format(account.balances.current as number)}
+                </td>
+                <td className="px-6 py-3 font-mono text-green-600">
+                  {usd.format(account.balances.available as number)}
+                </td>
               </tr>
             ))}
           </tbody>

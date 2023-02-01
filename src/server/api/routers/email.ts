@@ -68,9 +68,9 @@ export const emailRouter = createTRPCRouter({
     const emailHtml = render(Email({ accounts: accountsFlat }));
 
     const options = {
-      from: "you@example.com",
-      to: "user@gmail.com",
-      subject: "hello world",
+      from: "Teller <goodmorning@teller.sh>",
+      to: ctx.session.user.email as string,
+      subject: `Your Daily Teller Update for ${new Date().toLocaleDateString()}`,
       html: emailHtml,
     };
 

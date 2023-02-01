@@ -15,7 +15,7 @@ export const PlaidLink: React.FC<{ linkToken: string }> = ({ linkToken }) => {
         { publicToken: public_token },
         {
           onSuccess: () => {
-            utils.plaid.getAccountData.invalidate();
+            void utils.plaid.getAccountData.invalidate();
           },
         }
       );
@@ -26,7 +26,7 @@ export const PlaidLink: React.FC<{ linkToken: string }> = ({ linkToken }) => {
     <button
       onClick={() => open()}
       disabled={!ready}
-      className="rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white"
+      className="rounded px-3 py-2 font-medium text-slate-700 hover:bg-slate-500/5 hover:text-slate-900"
     >
       Link Bank Account
     </button>
