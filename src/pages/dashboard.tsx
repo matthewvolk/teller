@@ -115,8 +115,8 @@ const Accounts = () => {
   return (
     <>
       <div className="overflow-x-auto">
-        <table className="w-full table-auto rounded-md text-left">
-          <thead className="bg-slate-500/5 text-sm uppercase">
+        <table className="w-full table-auto rounded-md text-left text-sm">
+          <thead className="bg-slate-500/5 text-xs uppercase">
             <tr>
               <th className="px-6 py-3">Name</th>
               <th className="px-6 py-3">Mask</th>
@@ -126,13 +126,16 @@ const Accounts = () => {
           </thead>
           <tbody>
             {accounts.data.map((account) => (
-              <tr key={account.account_id} className="border-b">
-                <td className="px-6 py-3 font-medium">{account.name}</td>
-                <td className="px-6 py-3 font-mono">{account.mask}</td>
-                <td className="px-6 py-3 font-mono text-green-600">
+              <tr
+                key={account.account_id}
+                className="border-b hover:bg-slate-500/5"
+              >
+                <td className="px-6 py-2 font-medium">{account.name}</td>
+                <td className="px-6 py-2 font-mono">{account.mask}</td>
+                <td className="px-6 py-2 font-mono text-green-600">
                   {usd.format(account.balances.current as number)}
                 </td>
-                <td className="px-6 py-3 font-mono text-green-600">
+                <td className="px-6 py-2 font-mono text-green-600">
                   {usd.format(account.balances.available as number)}
                 </td>
               </tr>
