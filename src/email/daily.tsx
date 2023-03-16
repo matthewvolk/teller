@@ -14,29 +14,24 @@ const Email: React.FC<{ accounts: AccountBase[] }> = ({ accounts }) => {
   return (
     <Tailwind>
       <Html lang="en">
-        <Container className="bg-slate-50 text-slate-900">
+        <Container className="mx-auto bg-neutral-900 font-mono text-white">
           <Text>
-            <h1 className="mb-8 text-center text-lg font-bold">
-              Good morning! 👋
-            </h1>
+            <h1 className="mb-8 text-base font-normal">g&apos;morn</h1>
           </Text>
           {accounts.map((account) => (
             <>
-              <Text className="mx-4">
-                <span className="m-0 mb-0.5 text-lg font-bold">
-                  Account: {account.name}{" "}
-                  <span className="m-0 mb-0.5 rounded bg-slate-500/10 p-1 font-mono font-medium">
-                    {account.mask}
-                  </span>
+              <Text className="m-0">
+                <span className="m-0">
+                  Account: {account.name} {account.mask}
                 </span>
 
-                <div className="mx-4 mb-8 grid max-w-sm grid-cols-2 gap-2">
-                  <p className="my-0.5">Current Balance:</p>
-                  <p className="my-0.5 font-mono font-bold text-green-600">
+                <div className="mb-8 grid max-w-sm grid-cols-2">
+                  <p className="my-0.5 text-sm">Current Balance:</p>
+                  <p className="my-0.5 text-sm text-green-600">
                     {usd.format(account.balances.current as number)}
                   </p>
-                  <p className="my-0.5">Available Balance:</p>
-                  <p className="my-0.5 font-mono font-bold text-green-600">
+                  <p className="my-0.5 text-sm">Available Balance:</p>
+                  <p className="my-0.5 text-sm text-green-600">
                     {usd.format(account.balances.available as number)}
                   </p>
                 </div>
