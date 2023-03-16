@@ -26,7 +26,7 @@ export const PlaidLink: React.FC<{ linkToken: string }> = ({ linkToken }) => {
     <button
       onClick={() => open()}
       disabled={!ready}
-      className="rounded px-3 py-2 font-medium text-slate-700 hover:bg-slate-500/5 hover:text-slate-900"
+      className="rounded px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-500/5 hover:text-slate-900"
     >
       Link Bank Account
     </button>

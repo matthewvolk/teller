@@ -53,7 +53,7 @@ export default function Dashboard() {
             </Link>
             <button
               onClick={() => void signOut()}
-              className="rounded px-3 py-2 font-medium text-slate-700 hover:bg-slate-500/5 hover:text-slate-900"
+              className="rounded px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-500/5 hover:text-slate-900"
             >
               Sign Out
             </button>
@@ -72,7 +72,7 @@ export default function Dashboard() {
 
           <button
             onClick={() => email.mutate()}
-            className="rounded px-3 py-2 font-medium text-slate-700 hover:bg-slate-500/5 hover:text-slate-900"
+            className="rounded px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-500/5 hover:text-slate-900"
           >
             Send Email
           </button>

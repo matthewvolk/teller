@@ -46,7 +46,7 @@ export default function Home() {
 
             <button
               onClick={() => void signIn()}
-              className="rounded px-3 py-2 font-medium text-slate-700 hover:bg-slate-500/5 hover:text-slate-900"
+              className="rounded px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-500/5 hover:text-slate-900"
             >
               Sign in
             </button>
