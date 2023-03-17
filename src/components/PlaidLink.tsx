@@ -23,6 +23,7 @@ export const PlaidLink: React.FC<{ linkToken: string }> = ({ linkToken }) => {
   });
 
   return (
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     <button onClick={() => open()} disabled={!ready}>
       [Link Bank Account]
     </button>
