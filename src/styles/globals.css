@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 body {
-  @apply bg-neutral-900 font-mono text-white;
+  @apply bg-orange-50;
 }

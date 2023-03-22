@@ -1,20 +1,14 @@
-import { env } from "@/env/server.mjs";
-import { prisma } from "@/server/db";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import type { GetServerSidePropsContext } from "next";
+import { type GetServerSidePropsContext } from "next";
 import {
   getServerSession,
-  type DefaultSession,
   type NextAuthOptions,
+  type DefaultSession,
 } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { env } from "@/env.mjs";
+import { prisma } from "@/server/db";
 
-/**
- * Module augmentation for `next-auth` types
- * Allows us to add custom properties to the `session` object
- * and keep type safety
- * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
- **/
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {

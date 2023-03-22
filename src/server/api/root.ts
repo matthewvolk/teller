@@ -1,10 +1,8 @@
-import { plaidRouter } from "@/server/api/routers/plaid";
 import { createTRPCRouter } from "@/server/api/trpc";
-import { emailRouter } from "@/server/api/routers/email";
+import { exampleRouter } from "@/server/api/routers/example";
 
 export const appRouter = createTRPCRouter({
-  email: emailRouter,
-  plaid: plaidRouter,
+  example: exampleRouter,
 });
 
 export type AppRouter = typeof appRouter;
