@@ -3,16 +3,6 @@ import { z } from "zod";
 const server = z.object({
   DATABASE_URL: z.string().url(),
   NODE_ENV: z.enum(["development", "test", "production"]),
-  NEXTAUTH_SECRET:
-    process.env.NODE_ENV === "production"
-      ? z.string().min(1)
-      : z.string().min(1).optional(),
-  NEXTAUTH_URL: z.preprocess(
-    (str) => process.env.VERCEL_URL ?? str,
-    process.env.VERCEL ? z.string().min(1) : z.string().url()
-  ),
-  GITHUB_CLIENT_ID: z.string().min(1),
-  GITHUB_CLIENT_SECRET: z.string().min(1),
 });
 
 const client = z.object({});
@@ -20,10 +10,6 @@ const client = z.object({});
 const processEnv = {
   DATABASE_URL: process.env.DATABASE_URL,
   NODE_ENV: process.env.NODE_ENV,
-  NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
-  NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-  GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
-  GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
 };
 
 const merged = server.merge(client);
@@ -43,7 +29,7 @@ if (!!process.env.SKIP_ENV_VALIDATION == false) {
 
   if (parsed.success === false) {
     console.error(
-      "Invalid environment variables:",
+      "[ERROR] Invalid environment variables:",
       parsed.error.flatten().fieldErrors
     );
     throw new Error("Invalid environment variables");
@@ -55,8 +41,8 @@ if (!!process.env.SKIP_ENV_VALIDATION == false) {
       if (!isServer && !prop.startsWith("NEXT_PUBLIC_"))
         throw new Error(
           process.env.NODE_ENV === "production"
-            ? "Attempted to access a server-side environment variable on the client"
-            : `Attempted to access server-side environment variable '${prop}' on the client`
+            ? "[ERROR] Attempted to access a server-side environment variable on the client"
+            : `[ERROR] Attempted to access server-side environment variable '${prop}' on the client`
         );
       return target[/** @type {keyof typeof target} */ (prop)];
     },

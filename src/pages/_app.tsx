@@ -1,19 +1,38 @@
 import { type AppType } from "next/app";
-import { type Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
+import { useRouter } from "next/router";
 
 import { api } from "@/utils/api";
 
 import "@/styles/globals.css";
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  RedirectToSignIn,
+} from "@clerk/nextjs";
 
-const MyApp: AppType<{ session: Session | null }> = ({
-  Component,
-  pageProps: { session, ...pageProps },
-}) => {
+const publicPages: Array<string> = ["/"];
+
+const MyApp: AppType = ({ Component, pageProps }) => {
+  const { pathname } = useRouter();
+
+  const isPublicPage = publicPages.includes(pathname);
+
   return (
-    <SessionProvider session={session}>
-      <Component {...pageProps} />
-    </SessionProvider>
+    <ClerkProvider {...pageProps}>
+      {isPublicPage ? (
+        <Component {...pageProps} />
+      ) : (
+        <>
+          <SignedIn>
+            <Component {...pageProps} />
+          </SignedIn>
+          <SignedOut>
+            <RedirectToSignIn />
+          </SignedOut>
+        </>
+      )}
+    </ClerkProvider>
   );
 };
 

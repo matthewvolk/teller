@@ -1,21 +1,37 @@
-import { Layout } from "@/components/Layout";
+import { Theme } from "@/components/Theme";
+import { api } from "@/utils/api";
+import { UserButton } from "@clerk/nextjs";
 import { type NextPage } from "next";
-import { signIn, signOut, useSession } from "next-auth/react";
-import Link from "next/link";
+import Head from "next/head";
 
 const Dashboard: NextPage = () => {
-  const { data: session } = useSession();
+  const privateHello = api.hello.privateHello.useQuery({ text: "from tRPC" });
 
   return (
-    <Layout title="Dashboard">
-      <h1>Dashboard</h1>
-      {session && <p>Logged in as {session.user?.name}</p>}
-      <Link href="/">Go Home</Link>
-      <br />
-      <button onClick={session ? () => void signOut() : () => void signIn()}>
-        {session ? "Sign out" : "Sign in"}
-      </button>
-    </Layout>
+    <>
+      <Head>
+        <title>Dashboard - Teller</title>
+        <meta
+          name="description"
+          content="Teller is an email service for money management"
+        />
+        <link rel="icon" href="/favicon.svg" />
+      </Head>
+      <main className="container mx-auto p-4">
+        <nav className="flex items-center justify-between pb-4">
+          <h1>Dashboard</h1>
+          <div className="flex items-center gap-2">
+            <Theme />
+            <UserButton afterSignOutUrl="/" />
+          </div>
+        </nav>
+        <p>
+          {privateHello.data
+            ? privateHello.data.greeting
+            : "Loading tRPC query..."}
+        </p>
+      </main>
+    </>
   );
 };
 
