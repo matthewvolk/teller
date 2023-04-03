@@ -3,9 +3,11 @@ import { api } from "@/utils/api";
 import { UserButton } from "@clerk/nextjs";
 import { type NextPage } from "next";
 import Head from "next/head";
+import { usePlaidLink } from "react-plaid-link";
 
 const Dashboard: NextPage = () => {
-  const privateHello = api.hello.privateHello.useQuery({ text: "from tRPC" });
+  const plaidItems = api.plaid.getAllAccounts.useQuery();
+  const createLinkToken = api.plaid.createLinkToken.useQuery();
 
   return (
     <>
@@ -25,13 +27,53 @@ const Dashboard: NextPage = () => {
             <UserButton afterSignOutUrl="/" />
           </div>
         </nav>
+
+        <p>{plaidItems.isLoading && "Loading..."}</p>
+        <p>{plaidItems.isError && plaidItems.error.message}</p>
+        {plaidItems.isSuccess &&
+          plaidItems.data.map((item) => (
+            <pre key={item.item.item_id}>{JSON.stringify(item, null, 2)}</pre>
+          ))}
+
+        <p>{createLinkToken.isLoading && "Loading..."}</p>
+        <p>{createLinkToken.isError && createLinkToken.error.message}</p>
         <p>
-          {privateHello.data
-            ? privateHello.data.greeting
-            : "Loading tRPC query..."}
+          {createLinkToken.isSuccess && (
+            <Link linkToken={createLinkToken.data.link_token} />
+          )}
         </p>
       </main>
     </>
+  );
+};
+
+interface LinkProps {
+  linkToken: string | null;
+}
+
+const Link: React.FC<LinkProps> = ({ linkToken }) => {
+  const ctx = api.useContext();
+  const exchangePublicToken = api.plaid.exchangePublicToken.useMutation();
+
+  const config: Parameters<typeof usePlaidLink>[0] = {
+    token: linkToken,
+    onSuccess: (public_token, _metadata) => {
+      exchangePublicToken.mutate(
+        { publicToken: public_token },
+        {
+          onSuccess: () => {
+            void ctx.plaid.getAllAccounts.invalidate();
+          },
+        }
+      );
+    },
+  };
+  const { open, ready } = usePlaidLink(config);
+  return (
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    <button onClick={() => open()} disabled={!ready}>
+      Link account
+    </button>
   );
 };
 

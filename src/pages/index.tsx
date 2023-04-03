@@ -1,14 +1,11 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 
-import { api } from "@/utils/api";
 import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { Theme } from "@/components/Theme";
 
 const Home: NextPage = () => {
-  const publicHello = api.hello.publicHello.useQuery({ text: "from tRPC" });
-
   const user = useUser();
 
   return (
@@ -36,11 +33,6 @@ const Home: NextPage = () => {
             )}
           </div>
         </nav>
-        <p>
-          {publicHello.data
-            ? publicHello.data.greeting
-            : "Loading tRPC query..."}
-        </p>
       </main>
     </>
   );

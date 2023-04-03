@@ -1,8 +1,8 @@
 import { createTRPCRouter } from "@/server/api/trpc";
-import { helloRouter } from "@/server/api/routers/hello";
+import { plaidRouter } from "@/server/api/routers/plaid";
 
 export const appRouter = createTRPCRouter({
-  hello: helloRouter,
+  plaid: plaidRouter,
 });
 
 export type AppRouter = typeof appRouter;
