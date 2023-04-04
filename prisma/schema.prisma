@@ -12,7 +12,7 @@ model PlaidItem {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    itemId      String
+    itemId      String @unique
     accessToken String
 
     userId String
