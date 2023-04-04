@@ -62,10 +62,10 @@ const Accounts = () => {
   }
 
   return (
-    <div className="relative overflow-x-auto rounded-md border dark:border-neutral-700">
-      <table className="w-full dark:border-neutral-700">
-        <thead className="bg-neutral-100 text-left text-xs uppercase dark:bg-neutral-800">
-          <tr className="border-b dark:border-neutral-700">
+    <div className="relative overflow-x-auto rounded-md border border-onyx-300 dark:border-onyx-700">
+      <table className="w-full">
+        <thead className="bg-onyx-300/50 text-left text-xs uppercase dark:bg-onyx-800">
+          <tr className="border-b border-onyx-300 dark:border-onyx-700">
             <th className="whitespace-nowrap px-3 py-3">Institution</th>
             <th className="whitespace-nowrap px-3 py-3">Account</th>
             <th className="whitespace-nowrap px-3 py-3">Mask</th>
@@ -77,35 +77,33 @@ const Accounts = () => {
           {accountsWithInstitution.data.map((account) => (
             <tr
               key={account.account_id}
-              className="border-b hover:bg-neutral-100 dark:border-neutral-700 hover:dark:bg-neutral-800"
+              className="border-b border-onyx-300/50 last:border-none hover:bg-onyx-300/50 dark:border-onyx-700 hover:dark:bg-onyx-800"
             >
               <td className="whitespace-nowrap px-3 py-1.5">
                 {account.institution_name}
               </td>
               <td className="whitespace-nowrap px-3 py-1.5">{account.name}</td>
-              <td className="whitespace-nowrap px-3 py-1.5">
-                <span className="whitespace-nowrap rounded-md bg-neutral-100 px-1 py-0.5 font-mono text-neutral-800 dark:bg-neutral-800 dark:text-neutral-50">
-                  {account.mask}
-                </span>
+              <td className="whitespace-nowrap px-3 py-1.5 font-mono">
+                {account.mask}
               </td>
               <td className="whitespace-nowrap px-3 py-1.5">
                 {(account.balances.current as number) > 0 ? (
-                  <span className="whitespace-nowrap rounded-md bg-green-100/75 px-1 py-0.5 text-green-800 dark:bg-green-800/75 dark:text-green-50">
+                  <span className="whitespace-nowrap rounded-md bg-green-300/30 px-1 py-0.5 text-green-800 dark:bg-green-800/75 dark:text-green-50">
                     ${account.balances.current?.toFixed(2)}
                   </span>
                 ) : (
-                  <span className="whitespace-nowrap rounded-md bg-red-100/75 px-1 py-0.5 text-red-800 dark:bg-red-800/75 dark:text-red-50">
+                  <span className="whitespace-nowrap rounded-md bg-red-300/30 px-1 py-0.5 text-red-800 dark:bg-red-800/75 dark:text-red-50">
                     ${account.balances.current?.toFixed(2)}
                   </span>
                 )}
               </td>
               <td className="whitespace-nowrap px-3 py-1.5">
                 {(account.balances.available as number) > 0 ? (
-                  <span className="whitespace-nowrap rounded-md bg-green-100/75 px-1 py-0.5 text-green-800 dark:bg-green-800/75 dark:text-green-50">
+                  <span className="whitespace-nowrap rounded-md bg-green-300/30 px-1 py-0.5 text-green-800 dark:bg-green-800/75 dark:text-green-50">
                     ${account.balances.available?.toFixed(2)}
                   </span>
                 ) : (
-                  <span className="whitespace-nowrap rounded-md bg-red-100/75 px-1 py-0.5 text-red-800 dark:bg-red-800/75 dark:text-red-50">
+                  <span className="whitespace-nowrap rounded-md bg-red-300/30 px-1 py-0.5 text-red-800 dark:bg-red-800/75 dark:text-red-50">
                     ${account.balances.available?.toFixed(2)}
                   </span>
                 )}
@@ -140,7 +138,7 @@ const Transactions = () => {
     return (
       <>
         <h1 className="pb-4 text-2xl font-medium">Transactions</h1>
-        <p className="rounded-md bg-red-100/75 p-4 font-mono text-sm text-red-800 dark:bg-red-800/75 dark:text-red-50">
+        <p className="rounded-md bg-red-300/30 p-4 font-mono text-sm text-red-800 dark:bg-red-800/75 dark:text-red-50">
           Error: {transactions.error.message}
         </p>
       </>
@@ -159,10 +157,10 @@ const Transactions = () => {
   return (
     <>
       <h1 className="pb-4 text-2xl font-medium">Transactions</h1>
-      <div className="relative overflow-x-auto rounded-md border dark:border-neutral-700">
-        <table className="w-full dark:border-neutral-700">
-          <thead className="bg-neutral-100 text-left text-xs uppercase dark:bg-neutral-800">
-            <tr className="border-b dark:border-neutral-700">
+      <div className="relative overflow-x-auto rounded-md border border-onyx-300/50 dark:border-onyx-700">
+        <table className="w-full">
+          <thead className="bg-onyx-300/50 text-left text-xs uppercase dark:bg-onyx-800">
+            <tr className="border-b border-onyx-300/50 dark:border-onyx-700">
               <th className="whitespace-nowrap px-3 py-3">Transaction</th>
               <th className="whitespace-nowrap px-3 py-3">Amount</th>
               <th className="whitespace-nowrap px-3 py-3">Account</th>
@@ -180,18 +178,18 @@ const Transactions = () => {
               .map((transaction) => (
                 <tr
                   key={transaction.transaction_id}
-                  className="border-b hover:bg-neutral-100 dark:border-neutral-700 hover:dark:bg-neutral-800"
+                  className="border-b border-onyx-300/50 last:border-none hover:bg-onyx-300/50 dark:border-onyx-700 hover:dark:bg-onyx-800"
                 >
                   <td className="whitespace-nowrap px-3 py-1.5">
                     {transaction.name}
                   </td>
                   <td className="whitespace-nowrap px-3 py-1.5">
                     {transaction.amount > 0 ? (
-                      <span className="whitespace-nowrap rounded-md bg-green-100/75 px-1 py-0.5 text-green-800 dark:bg-green-800/75 dark:text-green-50">
+                      <span className="whitespace-nowrap rounded-md bg-green-300/30 px-1 py-0.5 text-green-800 dark:bg-green-800/75 dark:text-green-50">
                         ${transaction.amount.toFixed(2)}
                       </span>
                     ) : (
-                      <span className="whitespace-nowrap rounded-md bg-red-100/75 px-1 py-0.5 text-red-800 dark:bg-red-800/75 dark:text-red-50">
+                      <span className="whitespace-nowrap rounded-md bg-red-300/30 px-1 py-0.5 text-red-800 dark:bg-red-800/75 dark:text-red-50">
                         ${transaction.amount.toFixed(2)}
                       </span>
                     )}
@@ -199,10 +197,8 @@ const Transactions = () => {
                   <td className="whitespace-nowrap px-3 py-1.5">
                     {transaction.account_name}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-1.5">
-                    <span className="whitespace-nowrap rounded-md bg-neutral-100 px-1 py-0.5 font-mono text-neutral-800 dark:bg-neutral-800 dark:text-neutral-50">
-                      {transaction.account_mask}
-                    </span>
+                  <td className="whitespace-nowrap px-3 py-1.5 font-mono">
+                    {transaction.account_mask}
                   </td>
                   <td className="whitespace-nowrap px-3 py-1.5">
                     {transaction.institution_name}
@@ -228,7 +224,7 @@ const LinkAccountButton = () => {
     return (
       <button
         disabled
-        className="rounded-md bg-neutral-900 px-4 py-1.5 text-sm font-medium text-white hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 hover:dark:bg-neutral-100"
+        className="rounded-md bg-onyx-900 px-4 py-2 text-sm font-medium text-onyx-200 hover:bg-onyx-700 dark:bg-onyx-200 dark:text-onyx-900 hover:dark:bg-onyx-100"
       >
         Loading...
       </button>
@@ -274,7 +270,7 @@ const Link: React.FC<LinkProps> = ({ linkToken }) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       onClick={() => open()}
       disabled={!ready}
-      className="flex items-center gap-1.5 rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 hover:dark:bg-neutral-100"
+      className="flex items-center gap-1.5 rounded-md bg-onyx-900 px-4 py-2 text-sm font-medium text-onyx-200 hover:bg-onyx-700 dark:bg-onyx-200 dark:text-onyx-900 hover:dark:bg-onyx-100"
     >
       <span>Link account</span>
       <svg
@@ -298,28 +294,28 @@ export default Dashboard;
 const Loading = () => (
   <div
     role="status"
-    className="animate-pulse space-y-4 divide-y divide-neutral-200 rounded border border-neutral-200 p-4 dark:divide-neutral-700 dark:border-neutral-700 md:p-6"
+    className="animate-pulse space-y-4 divide-y divide-onyx-300 rounded border border-onyx-300 p-4 dark:divide-onyx-700 dark:border-onyx-700 md:p-6"
   >
     <div className="flex items-center justify-between">
       <div>
-        <div className="mb-2.5 h-2.5 w-24 rounded-full bg-neutral-200 dark:bg-neutral-700"></div>
-        <div className="h-2 w-32 rounded-full bg-neutral-200 dark:bg-neutral-700"></div>
+        <div className="mb-2.5 h-2.5 w-24 rounded-full bg-onyx-300 dark:bg-onyx-700"></div>
+        <div className="h-2 w-32 rounded-full bg-onyx-300 dark:bg-onyx-700"></div>
       </div>
-      <div className="h-2.5 w-12 rounded-full bg-neutral-200 dark:bg-neutral-700"></div>
+      <div className="h-2.5 w-12 rounded-full bg-onyx-300 dark:bg-onyx-700"></div>
     </div>
     <div className="flex items-center justify-between pt-4">
       <div>
-        <div className="mb-2.5 h-2.5 w-24 rounded-full bg-neutral-200 dark:bg-neutral-700"></div>
-        <div className="h-2 w-32 rounded-full bg-neutral-200 dark:bg-neutral-700"></div>
+        <div className="mb-2.5 h-2.5 w-24 rounded-full bg-onyx-300 dark:bg-onyx-700"></div>
+        <div className="h-2 w-32 rounded-full bg-onyx-300 dark:bg-onyx-700"></div>
       </div>
-      <div className="h-2.5 w-12 rounded-full bg-neutral-200 dark:bg-neutral-700"></div>
+      <div className="h-2.5 w-12 rounded-full bg-onyx-300 dark:bg-onyx-700"></div>
     </div>
     <div className="flex items-center justify-between pt-4">
       <div>
-        <div className="mb-2.5 h-2.5 w-24 rounded-full bg-neutral-200 dark:bg-neutral-700"></div>
-        <div className="h-2 w-32 rounded-full bg-neutral-200 dark:bg-neutral-700"></div>
+        <div className="mb-2.5 h-2.5 w-24 rounded-full bg-onyx-300 dark:bg-onyx-700"></div>
+        <div className="h-2 w-32 rounded-full bg-onyx-300 dark:bg-onyx-700"></div>
       </div>
-      <div className="h-2.5 w-12 rounded-full bg-neutral-200 dark:bg-neutral-700"></div>
+      <div className="h-2.5 w-12 rounded-full bg-onyx-300 dark:bg-onyx-700"></div>
     </div>
     <span className="sr-only">Loading...</span>
   </div>
