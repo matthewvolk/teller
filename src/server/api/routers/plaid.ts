@@ -5,6 +5,7 @@ import {
   PlaidApi,
   PlaidEnvironments,
   Products,
+  type Transaction,
 } from "plaid";
 import { createTRPCRouter, privateProcedure } from "@/server/api/trpc";
 import { env } from "@/env.mjs";
@@ -82,16 +83,14 @@ export const plaidRouter = createTRPCRouter({
           return [
             ...prev,
             ...curr.accounts
-              .map((account) => {
-                return {
-                  ...account,
-                  institution_id: curr.institution_id,
-                  institution_name: curr.institution_name,
-                  institution_color: curr.institution_color,
-                  institution_url: curr.institution_url,
-                  institution_logo: curr.institution_logo,
-                };
-              })
+              .map((account) => ({
+                ...account,
+                institution_id: curr.institution_id,
+                institution_name: curr.institution_name,
+                institution_color: curr.institution_color,
+                institution_url: curr.institution_url,
+                institution_logo: curr.institution_logo,
+              }))
               .flat(),
           ];
         },
@@ -115,7 +114,7 @@ export const plaidRouter = createTRPCRouter({
           },
         });
 
-        return Promise.all(
+        const transactions = await Promise.all(
           items.map(async (item) => {
             const transactions = await plaid.transactionsGet({
               access_token: item.accessToken,
@@ -125,7 +124,65 @@ export const plaidRouter = createTRPCRouter({
 
             return transactions.data;
           })
-        ).then((transactions) => transactions.flat());
+        );
+
+        const institutionWithTransactions = await Promise.all(
+          transactions.map(async (transaction) => {
+            const institute = await plaid.institutionsGetById({
+              institution_id: transaction.item.institution_id as string,
+              country_codes: [CountryCode.Us],
+            });
+
+            return {
+              institution_id: transaction.item.institution_id,
+              institution_name: institute.data.institution.name,
+              institution_color: institute.data.institution.primary_color,
+              institution_url: institute.data.institution.url,
+              institution_logo: institute.data.institution.logo,
+              accounts: transaction.accounts,
+              transactions: transaction.transactions,
+            };
+          })
+        );
+
+        type TransactionsWithInstitution = Array<
+          Transaction & {
+            institution_id: string | null | undefined;
+            institution_name: string;
+            institution_color: string | null | undefined;
+            institution_url: string | null | undefined;
+            institution_logo: string | null | undefined;
+            account_id: string;
+            account_mask: string | null;
+            account_name: string;
+          }
+        >;
+
+        return institutionWithTransactions.reduce<TransactionsWithInstitution>(
+          (prev, curr) => {
+            return [
+              ...prev,
+              ...curr.transactions.map((transaction) => {
+                const transactionAccount = curr.accounts.find(
+                  (account) => account.account_id === transaction.account_id
+                ) as AccountBase;
+
+                return {
+                  ...transaction,
+                  institution_id: curr.institution_id,
+                  institution_name: curr.institution_name,
+                  institution_color: curr.institution_color,
+                  institution_url: curr.institution_url,
+                  institution_logo: curr.institution_logo,
+                  account_id: transactionAccount.account_id,
+                  account_mask: transactionAccount.mask,
+                  account_name: transactionAccount.name,
+                };
+              }),
+            ];
+          },
+          []
+        );
       } catch (err) {
         console.error(err);
         throw new TRPCError({
