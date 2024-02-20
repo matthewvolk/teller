@@ -1,7 +1,0 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-  @apply bg-onyx-200 text-onyx-900 dark:bg-onyx-900 dark:text-onyx-200;
-}
