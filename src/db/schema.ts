@@ -1,14 +1,9 @@
-import {
-  boolean,
-  integer,
-  numeric,
-  pgTable,
-  serial,
-} from "drizzle-orm/pg-core";
+import { varchar, pgTable, serial } from "drizzle-orm/pg-core";
 
-export const transactions = pgTable("transactions", {
+export const accounts = pgTable("accounts", {
   id: serial("id").primaryKey(),
-  merchantId: integer("merchant_id").notNull(),
-  amount: numeric("amount", { scale: 2, precision: 10 }).notNull(),
-  need: boolean("need").notNull(),
+  accessToken: varchar("access_token").notNull(),
+  itemId: varchar("item_id").notNull(),
 });
+
+export type SelectAccount = typeof accounts.$inferSelect;
