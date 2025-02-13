@@ -2,9 +2,10 @@
 
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import PDFParser from "pdf2json";
-import { fileURLToPath } from "url";
 import { resolve } from "node:path";
+import { fileURLToPath } from "url";
+
+import PDFParser from "pdf2json";
 
 /**
  * @param {string} filePath - The path to the PDF file.
