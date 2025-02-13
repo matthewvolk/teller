@@ -1,95 +1,101 @@
-import { Protect } from "@clerk/nextjs";
+import Image from "next/image";
 
-import { PlaidLink } from "@/components/PlaidLink";
-import { db } from "@/db";
-import { accountsGet, linkTokenCreate, transactionsSync } from "@/lib/plaid";
-
-export default async function Home() {
-  const { linkToken } = await linkTokenCreate();
-
-  const item = await db.query.accounts.findFirst();
-
-  if (!item) {
-    return (
-      <main className="flex-1">
-        <Protect>
-          <PlaidLink linkToken={linkToken} />
-        </Protect>
-      </main>
-    );
-  }
-
-  const accounts = await accountsGet(item);
-  const transactions = await transactionsSync(item);
-
+export default function Home() {
   return (
-    <main className="flex-1">
-      <Protect>
-        <PlaidLink linkToken={linkToken} />
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+        <Image
+          className="dark:invert"
+          src="/next.svg"
+          alt="Next.js logo"
+          width={180}
+          height={38}
+          priority
+        />
+        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
+          <li className="mb-2">
+            Get started by editing{" "}
+            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
+              src/app/page.tsx
+            </code>
+            .
+          </li>
+          <li>Save and see your changes instantly.</li>
+        </ol>
 
-        <div className="max-h-96 overflow-scroll">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="*:whitespace-nowrap *:border *:px-2">
-                <th>account</th>
-                <th>transaction_id</th>
-                <th>merchant_name</th>
-                <th>name</th>
-                <th>amount</th>
-                <th>authorized_date</th>
-                <th>date</th>
-                <th>iso_currency_code</th>
-                <th>payment_channel</th>
-                <th>pending</th>
-                <th>pending_transaction_id</th>
-                <th>personal_finance_category.confidence_level</th>
-                <th>personal_finance_category.detailed</th>
-                <th>personal_finance_category.primary</th>
-              </tr>
-            </thead>
-            <tbody>
-              {transactions?.added.map((transaction) => (
-                <tr
-                  className="*:whitespace-nowrap *:border *:px-2"
-                  key={transaction.transaction_id}
-                >
-                  <td>
-                    {
-                      accounts?.accounts.find(
-                        (t) => t.account_id === transaction.account_id,
-                      )?.name
-                    }
-                  </td>
-                  <td>{transaction.transaction_id}</td>
-                  <td>{transaction.merchant_name}</td>
-                  <td>{transaction.name}</td>
-                  <td className="text-right">
-                    {Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: "USD",
-                    }).format(transaction.amount)}
-                  </td>
-                  <td>
-                    {transaction.authorized_date
-                      ? new Date(transaction.authorized_date).toLocaleString()
-                      : null}
-                  </td>
-                  <td>{new Date(transaction.date).toLocaleString()}</td>
-                  <td>{transaction.iso_currency_code}</td>
-                  <td>{transaction.payment_channel}</td>
-                  <td>{transaction.pending}</td>
-                  <td>{transaction.pending_transaction_id}</td>
-                  <td>
-                    {transaction.personal_finance_category?.confidence_level}
-                  </td>
-                  <td>{transaction.personal_finance_category?.detailed}</td>
-                  <td>{transaction.personal_finance_category?.primary}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="flex gap-4 items-center flex-col sm:flex-row">
+          <a
+            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image
+              className="dark:invert"
+              src="/vercel.svg"
+              alt="Vercel logomark"
+              width={20}
+              height={20}
+            />
+            Deploy now
+          </a>
+          <a
+            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
+            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Read our docs
+          </a>
         </div>
-      </Protect>
-    </main>
+      </main>
+      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
+        <a
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            aria-hidden
+            src="/file.svg"
+            alt="File icon"
+            width={16}
+            height={16}
+          />
+          Learn
+        </a>
+        <a
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            aria-hidden
+            src="/window.svg"
+            alt="Window icon"
+            width={16}
+            height={16}
+          />
+          Examples
+        </a>
+        <a
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            aria-hidden
+            src="/globe.svg"
+            alt="Globe icon"
+            width={16}
+            height={16}
+          />
+          Go to nextjs.org →
+        </a>
+      </footer>
+    </div>
   );
 }
