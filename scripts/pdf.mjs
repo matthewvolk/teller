@@ -3,7 +3,7 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import { resolve } from "node:path";
-import { fileURLToPath } from "url";
+import { fileURLToPath } from "node:url";
 
 import PDFParser from "pdf2json";
 
@@ -62,8 +62,8 @@ function groupTextByLine(texts, tolerance = 0.5) {
 }
 
 /**
- * Main method that processes a PDF file.
- * @param {string} filePath - The PDF file path.
+ * @main
+ * @param {string} filePath - The path to the PDF file.
  */
 async function main(filePath) {
   try {
